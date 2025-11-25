@@ -280,7 +280,6 @@ setup_stop_flag_and_watcher() {
 
 wait_for_main_or_stop() {
     if [[ -n "${WATCHER_PID:-}" && -n "${STOP_FLAG:-}" && $EARLY_EXIT_ON_STOP -eq 1 ]]; then
-        # early-exit 모드: STOP_FLAG 또는 메인 종료까지 짧게 폴링
         while true; do
             if [[ -e "$STOP_FLAG" ]]; then
                 break
@@ -292,7 +291,6 @@ wait_for_main_or_stop() {
         done
         EXIT_CODE=0
     else
-        # 메인 커맨드를 끝까지 기다림 (실패해도 스크립트는 계속 진행)
         set +e
         wait "$CMD_PID"
         EXIT_CODE=$?
